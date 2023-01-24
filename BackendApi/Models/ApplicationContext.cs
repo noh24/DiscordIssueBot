@@ -16,6 +16,10 @@ namespace BackEndApi.Models
         .HasData(
           new Issue { IssueId = 1, Name = "You", Description = "Are the problem" }
         );
+      builder.Entity<Solution>()
+        .HasData(
+          new Solution { SolutionId = 1, Name = "I am", Description = "The Solution", IssueId = 1 }
+        );
     }
   }
 }

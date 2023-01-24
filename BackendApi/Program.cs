@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(opt =>
-  opt.JsonSerializerOptions.ReferenceHandle.IgnoreCycles);
+  opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 //MySQL as our database service
 builder.Services.AddDbContext<ApplicationContext>(
