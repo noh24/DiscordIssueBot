@@ -27,7 +27,8 @@ namespace BackEndApi.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<Solution>> GetSolution(int id)
     {
-      Solution solution = await _db.Solutions.FindAsync(id).Include(e => e.Issue);
+      // Solution solution = await _db.Solutions.Include(e => e.Issue).FindAsync(id);
+      Solution solution = await _db.Solutions.Include(e => e.Issue).FirstOrDefaultAsync(e => e.SolutionId == id);
 
       if (solution == null)
       {
