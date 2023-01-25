@@ -39,38 +39,63 @@ namespace InteractionFramework.Modules
         public async Task GreetUserAsync()
             => await RespondAsync(text: $":ping_pong: It took me {Context.Client.Latency}ms to respond to you!", ephemeral: true);
 
-        [SlashCommand("show", "list all questions")]
-        public async Task ListIssueAsync()
-            {            
+
+
+        [SlashCommand("solution", "Create a Solution")]
+        public async Task AddSolution(string token, string description)
+        {   
             var sb = new StringBuilder();
             var embed = new EmbedBuilder();
-
-            // get user info from the Context
-            var user = Context.User;
-            
-            var issues = await _db.Issues.ToListAsync();
-            if (issues.Count > 0)
+            token = token.Trim();
+            Issue currentIssue = _db.Issues.FirstOrDefault(issue => issue.Token == token);
+            if (token != null && token.Length == 10 && currentIssue != null)
             {
-                foreach (var issue in issues)
+                await _db.Solutions.AddAsync( new Solution 
                 {
-                    sb.AppendLine($":small_blue_diamond: [{issue.IssueId}] **{issue.Name}** **{issue.Description}**");
-                }
+                    Name = Context.User.Username,
+                    Description = description,
+                    IssueId = currentIssue.IssueId
+                    
+                });
+                await _db.SaveChangesAsync();  
+                sb.AppendLine();
+                sb.AppendLine("**Solution Description**");
+                sb.AppendLine(description);
+                sb.AppendLine("**Solution Posted By**");
+                sb.AppendLine(Context.User.Username);
+                embed.Title = $"Solution to Issue: {currentIssue.Description}";
+                embed.Description = sb.ToString();
+                //await RespondAsync(text: "Solution created");
+
             }
             else
             {
-                sb.AppendLine("No answers found!");
+                sb.AppendLine();
+                sb.AppendLine("**Token:**");
+                sb.AppendLine(token);
+                sb.Append("** Not Found**");
+                embed.Title = $"ERROR";
+                embed.Description = sb.ToString();
+                //await RespondAsync(text: "Solution not created");
+
             }
-
-            // set embed
-            embed.Title = "Issue List";
-            embed.Description = sb.ToString();
-            
-            // send embed reply
-            await ReplyAsync(null, false, embed.Build());
+            //await RespondAsync(text: "Solution created", ephemeral: false);
+            await RespondAsync(embed: embed.Build());
         }
-
-        [SlashCommand("issue", "Add a new issue")]
-        public async Task AddIssue(string description)
+        
+        
+        [Group("issue", "This is a command group")]
+        public class IssueCommands : InteractionModuleBase<SocketInteractionContext>
+        {            
+            private readonly ApplicationContext _db;
+            public IssueCommands(InteractionHandler handler, ApplicationContext db)
+            {
+                _db = db;
+            }
+            // You can create command choices either by using the [Choice] attribute or by creating an enum. Every enum with 25 or less values will be registered as a multiple
+            // choice option
+            [SlashCommand("show-all", "list all questions")]
+            public async Task ListIssueAsync()
             {            
                 var sb = new StringBuilder();
                 var embed = new EmbedBuilder();
@@ -78,11 +103,60 @@ namespace InteractionFramework.Modules
                 // get user info from the Context
                 var user = Context.User;
                 
+                var issues = await _db.Issues.ToListAsync();
+                if (issues.Count > 0)
+                {
+                    foreach (var issue in issues)
+                    {
+                        sb.AppendLine($":small_blue_diamond: [{issue.Token}] **{issue.Name}** **{issue.Description}**");
+                    }
+                }
+                else
+                {
+                    sb.AppendLine("No answers found!");
+                }
+
+                // set embed
+                embed.Title = "Issue List";
+                embed.Description = sb.ToString();
+                
+                // send embed reply
+                await RespondAsync(embed: embed.Build());
+            }
+        
+            [SlashCommand("new", "Add a new issue")]
+            public async Task AddIssue(string description)
+            {            
+                var sb = new StringBuilder();
+                var embed = new EmbedBuilder();
+
+                // get user info from the Context
+                var user = Context.User;
+
+                //token generation
+                bool uniqueToken = false;
+                string token = "";
+                while (!uniqueToken)
+                {
+                    var allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    var random = new Random();
+                    var resultToken = new string(
+                        Enumerable.Repeat(allChar , 10)  
+                        .Select(token => token[random.Next(token.Length)]).ToArray());
+                    token = resultToken.ToString();
+                    if(_db.Issues.Where(issue => issue.Token == token).Count() == 0)
+                    {
+                        uniqueToken = true;
+                    }    
+
+                }
+
                 
                 // add answer/color to table
                 await _db.AddAsync(new Issue
                     {
                         Name  = user.Username,
+                        Token = token,
                         Description = description                     
                     }
                 );
@@ -94,31 +168,18 @@ namespace InteractionFramework.Modules
                 sb.AppendLine();
                 sb.AppendLine("**Asked By:**");
                 sb.AppendLine(user.Username);
-                
+                sb.AppendLine("**Issue Token:**");
+                sb.AppendLine(token);                
 
                 // set embed
                 embed.Title = "Issue Added";
                 embed.Description = sb.ToString();
                 
                 // send embed reply
-                await ReplyAsync(null, false, embed.Build());
-            }  
-
-
-        [SlashCommand("bitrate", "Gets the bitrate of a specific voice channel.")]
-        public async Task GetBitrateAsync([ChannelTypes(ChannelType.Voice, ChannelType.Stage)] IChannel channel)
-            => await RespondAsync(text: $"This voice channel has a bitrate of {(channel as IVoiceChannel).Bitrate}");
-
-        // // [Group] will create a command group. [SlashCommand]s and [ComponentInteraction]s will be registered with the group prefix
-        // [Group("test_group", "This is a command group")]
-        // public class GroupExample : InteractionModuleBase<SocketInteractionContext>
-        // {
-        //     // You can create command choices either by using the [Choice] attribute or by creating an enum. Every enum with 25 or less values will be registered as a multiple
-        //     // choice option
-        //     [SlashCommand("choice_example", "Enums create choices")]
-        //     public async Task ChoiceExample(ExampleEnum input)
-        //         => await RespondAsync(input.ToString());
-        // }
+                await RespondAsync(embed: embed.Build());
+                //await ReplyAsync(null, false, embed.Build());
+            }
+        }
 
         // // Use [ComponentInteraction] to handle message component interactions. Message component interaction with the matching customId will be executed.
         // // Alternatively, you can create a wild card pattern using the '*' character. Interaction Service will perform a lazy regex search and capture the matching strings.

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace FrontEndClient.Controllers;
 
-public class IssuessController : Controller
+public class IssuesController : Controller
 {
   public IActionResult Index()
   {
