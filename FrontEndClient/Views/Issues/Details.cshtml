@@ -2,8 +2,15 @@
   ViewData["Title"] = $"Details for {@Model.Name}";
 }
 
-<h1>All About @Model.Name</h1>
+<h1>@Model.Name</h1>
 
-<p>@Html.ActionLink("Edit details", "Edit", new { id = @Model.IssueId })</p>
-<p>@Html.ActionLink("Delete animal", "Delete", new { id = @Model.IssueId })</p>
-<p>@Html.ActionLink("Return to all animals", "Index")</p>
+<p>@Model.Description</p>
+
+  @foreach(Solution solution in Model.Solutions)
+  {
+    <h4>@solution.Name</h4>
+    <p>@solution.Description</p>
+  }
+
+
+<p>@Html.ActionLink("Back to all Issues", "Index")</p>

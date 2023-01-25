@@ -14,7 +14,7 @@ namespace FrontEndClient.Models
 
     public static List<Issue> GetIssues()
     {
-      string route = "issues";
+      string route = "Issues";
       var apiCallTask = ApiHelper.GetAll(route);
       var result = apiCallTask.Result;
 
@@ -22,6 +22,18 @@ namespace FrontEndClient.Models
       List<Issue> issueList = JsonConvert.DeserializeObject<List<Issue>>(jsonResponse.ToString());
 
       return issueList;
+    }
+
+    public static List<Issue> SearchIssues(string search)
+    {
+      string route = "Issues";
+      var apiCallTask = ApiHelper.Search(route, search);
+      var result = apiCallTask.Result;
+
+      JArray jsonResponse = JsonConvert.DeserializeObject<JArray>(result);
+      List<Issue> issueList = JsonConvert.DeserializeObject<List<Issue>>(jsonResponse.ToString());
+
+      return issueList;      
     }
 
     public static Issue GetDetails(int id)
