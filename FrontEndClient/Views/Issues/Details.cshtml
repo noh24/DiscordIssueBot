@@ -6,32 +6,70 @@
 
 <p>@Model.Description</p>
 
-<form>
-  <label for="search">Filter Solutions By Search Term</label>
-  <input type="text" name="searchTerm" id="searchTerm">
-  <button type="submit" class="btn btn-secondary">Search</button>
-</form>
-
-@if (ViewBag.SearchTerm != null)
+@if (Model.Solutions.Count == 0)
 {
-  @foreach(Solution solution in Model.Solutions)
-  { 
-    @if (solution.Name.Contains(ViewBag.SearchTerm) || solution.Description.Contains(ViewBag.SearchTerm))
-    {
-      <h4>@solution.Name</h4>
-      <p>@solution.Description</p>
-    }
-    
-  }
+  <p>No solutions have been posted to this issue</p>
 }
-else
+else 
 {
-  @foreach(Solution solution in Model.Solutions)
-  {
-    <h4>@solution.Name</h4>
-    <p>@solution.Description</p>
-  }
+  <div class="row">
+    <div class="col-6">
+      <form>
+        <label for="search">Filter Solutions By Search Term</label>
+        <input type="text" name="searchTerm" id="searchTerm">
+        <button type="submit" class="btn btn-secondary">Search</button>
+      </form>
+    </div>
+    <div class="col-6">
+      <p>| @Html.ActionLink("Clear Filter", "Details", "Issues", new {id = Model.IssueId})</p>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>            
+        <th>
+          Solution
+        </th>
+        <th>
+          Description
+        </th>            
+      </tr>
+    </thead>
+    <tbody>
+      @if (ViewBag.SearchTerm != null)
+      {
+        @foreach (Solution solution in Model.Solutions)
+        {
+          @if (solution.Name.Contains(ViewBag.SearchTerm) || solution.Description.Contains(ViewBag.SearchTerm))
+          {
+            <tr>
+              <td>
+                @solution.Name
+              </td>
+              <td>
+                @solution.Description
+              </td>               
+            </tr>
+          }
+        }
+      }
+      else 
+      {
+        @foreach (Solution solution in Model.Solutions)
+        {
+          <tr>
+            <td>
+              @solution.Name
+            </td>
+              <td>
+                @solution.Description
+              </td>               
+            </tr>
+        }
+      }        
+    </tbody>
+  </table>
 }
-
-
+<br>
 <p>@Html.ActionLink("Back to all Issues", "Index")</p>

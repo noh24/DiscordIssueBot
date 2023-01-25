@@ -4,16 +4,41 @@
 
 <h1>All Issues</h1>
 
-<form>
-  <label for="search">Filter Issues By Search Term</label>
-  <input type="text" name="searchTerm" id="searchTerm">
-  <button type="submit" class="btn btn-secondary">Search</button>
-</form>
+<div class="row">
+    <div class="col-6">
+      <form>
+        <label for="search">Filter Issues By Search Term</label>
+        <input type="text" name="searchTerm" id="searchTerm">
+        <button type="submit" class="btn btn-secondary">Search</button>
+      </form>
+    </div>
+    <div class="col-6">
+      <p>| @Html.ActionLink("Clear Filter", "Index", "Issues")</p>
+    </div>
+  </div>
 
-<ol>
-@foreach (Issue issue in Model)
-{
-  <li><strong>@issue.Name</strong> <a href="/Issues/Details/@(issue.IssueId)">View Details</a></li>
-}
-</ol>
-
+<table class="table">
+  <thead>
+    <tr>            
+      <th>
+        Issue
+      </th>
+      <th>
+        Description
+      </th>            
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (Issue issue in Model)
+    {
+      <tr>
+        <td>
+          @Html.ActionLink(issue.Name, "Details", "Issues", new {id = issue.IssueId})
+        </td>
+        <td>
+          @issue.Description
+        </td>               
+      </tr>
+    }
+  </tbody>
+</table>
