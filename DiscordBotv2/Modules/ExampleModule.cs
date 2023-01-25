@@ -108,7 +108,7 @@ namespace InteractionFramework.Modules
                 {
                     foreach (var issue in issues)
                     {
-                        sb.AppendLine($":small_blue_diamond: [{issue.Token}] **{issue.Name}** **{issue.Description}**");
+                        sb.AppendLine($":small_blue_diamond: [{issue.Token}]  **{issue.Name}**  asked: {issue.Subject}");
                     }
                 }
                 else
@@ -125,7 +125,7 @@ namespace InteractionFramework.Modules
             }
         
             [SlashCommand("new", "Add a new issue")]
-            public async Task AddIssue(string description)
+            public async Task AddIssue(string subject, string description)
             {            
                 var sb = new StringBuilder();
                 var embed = new EmbedBuilder();
@@ -156,6 +156,7 @@ namespace InteractionFramework.Modules
                 await _db.AddAsync(new Issue
                     {
                         Name  = user.Username,
+                        Subject = subject,
                         Token = token,
                         Description = description                     
                     }
@@ -163,6 +164,8 @@ namespace InteractionFramework.Modules
                 // save changes to database
                 await _db.SaveChangesAsync();                
                 sb.AppendLine();
+                sb.AppendLine("**Subject:**");
+                sb.AppendLine(subject);
                 sb.AppendLine("**Issue Description:**");
                 sb.AppendLine(description);
                 sb.AppendLine();
