@@ -13,44 +13,44 @@ using System.Data.SqlClient;
 
 public class Program
 {
-    private readonly IServiceProvider _serviceProvider; 
+    private readonly IServiceProvider _services; 
     private DiscordSocketClient _client;
-    private IConfiguration _config;
+    private readonly IConfiguration _config;
+
+    // private readonly DiscordSocketConfig _socketConfig = new()
+    //     {
+    //         GatewayIntents = GatewayIntents.AllUnprivileged,
+    //         AlwaysDownloadUsers = true,
+    //     };
 
     public Program()
     {
-        _serviceProvider = CreateProvider();
+        
         _config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true)
+                .AddEnvironmentVariables(prefix: "DC_")
+                .AddJsonFile("appsettings.json")
                 .Build();
 
+        _services= new ServiceCollection()
+            .AddSingleton(_config)
+            .AddSingleton<DiscordSocketClient>()
+            .BuildServiceProvider();
+            // AddDbContext<ApplicationContext>(
+            //             dbContextOptions => dbContextOptions
+            //                             .UseMySql(_config.GetRequiredSection("ConnectionStrings")["DefaultConnection"],
+            //                             ServerVersion.AutoDetect(_config.GetRequiredSection("ConnectionStrings")["DefaultConnection"])
+            //                             )
+            //                         );
     }
 
     static void Main(string[] args)
         => new Program().RunAsync(args).GetAwaiter().GetResult();
 
-    static IServiceProvider CreateProvider()
-    {
-        var collection = new ServiceCollection()
-            .AddSingleton<DiscordSocketClient>();
-        //.AddDbContext<ApplicationContext>(
-                     //   dbContextOptions => dbContextOptions
-                              //          .UseMySql(_config.GetRequiredSection("ConnectionStrings")["DefaultConnection"],
-                                  //      ServerVersion.AutoDetect(_config.GetRequiredSection("ConnectionStrings")["DefaultConnection"])
-                                     //     )
-                                   //     );
-
-
-        return collection.BuildServiceProvider();
-    }
-
     async Task RunAsync(string[] args)
     {
         // Request the instance from the client.
         // Because we're requesting it here first, its targetted constructor will be called and we will receive an active instance.
-        _client = _serviceProvider.GetRequiredService<DiscordSocketClient>();
-        //_client = _serviceProvider.GetRequiredService
-        // var config = new ConfigurationBuilder().AddJsonFile($"appsettings.json", true, true).Build();
+        _client = _services.GetRequiredService<DiscordSocketClient>();
         _client.Ready += Client_Ready;
         _client.SlashCommandExecuted += SlashCommandHandler;
         _client.Log += async (msg) =>
@@ -58,13 +58,14 @@ public class Program
             await Task.CompletedTask;
             Console.WriteLine(msg);
         };
-
-       // await _client.LoginAsync(TokenType.Bot, _config.GetRequiredSection("DiscordNet").GetValue["Token"]);
-        await _client.LoginAsync(TokenType.Bot, "MTA2NzEzNDcxNTE4Mzc3NTg0NQ.GoKW2W.FVwkNTfhQS69DwUctxWFHJQvrKnvlhl_wt_hXc");
+        await _client.LoginAsync(TokenType.Bot, _config["token"]);
         await _client.StartAsync();
 
         await Task.Delay(Timeout.Infinite);
     }
+
+    // private async Task LogAsync(LogMessage message)
+    //         => Console.WriteLine(message.ToString());
 
     public async Task Client_Ready()
     {
@@ -81,6 +82,7 @@ public class Program
         // Descriptions can have a max length of 100.
         guildCommand.WithDescription("This is my first guild slash command!");
 
+
         var createIssueCommand = new SlashCommandBuilder()
             .WithName("issue")
             .AddOption("description", ApplicationCommandOptionType.String, "issue", isRequired: true)
@@ -88,20 +90,21 @@ public class Program
 
         // Let's do our global command
         var globalCommand = new SlashCommandBuilder();
-        globalCommand.WithName("first-command");
-        globalCommand.WithDescription("This is my first global slash command");
+        globalCommand.WithName("second-command");
+        globalCommand.WithDescription("This is my second global slash command");
 
         try
         {
             // Now that we have our builder, we can call the CreateApplicationCommandAsync method to make our slash command.
             await guild.CreateApplicationCommandAsync(guildCommand.Build());
             await guild.CreateApplicationCommandAsync(createIssueCommand.Build());
+            
             // With global commands we don't need the guild.
             await _client.CreateGlobalApplicationCommandAsync(globalCommand.Build());
             // Using the ready event is a simple implementation for the sake of the example. Suitable for testing and development.
             // For a production bot, it is recommended to only run the CreateGlobalApplicationCommandAsync() once for each command.
         }
-        catch (ApplicationCommandException exception)
+        catch (HttpException exception)
         {
             // If our command was invalid, we should catch an ApplicationCommandException. This exception contains the path of the error as well as the error message. You can serialize the Error field in the exception to get a visual of where your error is.
             var json = JsonConvert.SerializeObject(exception.Message, Formatting.Indented);
@@ -139,17 +142,18 @@ public class Program
     //create solution
     private async Task SlashCommandHandler(SocketSlashCommand command)
     {
-        switch(command.Data.Name)
-        {
-            case "first-command":
-            await command.RespondAsync($"You executed {command.Data.Name}");
-            break;
-            case "issue":
-            await CreateIssueAsync(command.User.Username, command.Data.Options.First().Value.ToString(), "Server=localhost;Port=3306;database=discord_issue_bot;uid=root;pwd=epicodus;");
-            await command.RespondAsync($"You executed {command.Data.Name}");
-            break;
+        // switch(command.Data.Name)
+        // {
+        //     case "first-command":
+        //     await command.RespondAsync($"You executed {command.Data.Name}");
+        //     break;
+        //     case "issue":
+        //     await CreateIssueAsync(command.User.Username, command.Data.Options.First().Value.ToString(), "Server=localhost;Port=3306;database=discord_issue_bot;uid=root;pwd=epicodus;");
+        //     await command.RespondAsync($"You executed {command.Data.Name}");
+        //     break;
 
-        }
+        // }
+        await command.RespondAsync($"You executed {command.Data.Name}");
     }
 
 }
