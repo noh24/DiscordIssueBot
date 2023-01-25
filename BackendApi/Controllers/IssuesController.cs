@@ -17,9 +17,13 @@ namespace BackEndApi.Controllers
 
     // GET api/issues
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Issue>>> Get()
+    public async Task<ActionResult<IEnumerable<Issue>>> Get(string searchTerm)
     {
       IQueryable<Issue> query = _db.Issues.AsQueryable().Include(e => e.Solutions);
+      if (searchTerm != null)
+      {
+        query = query.Where(entry => (entry.Name.Contains(searchTerm) || entry.Description.Contains(searchTerm)));
+      }
       return await query.ToListAsync();
     }
 
