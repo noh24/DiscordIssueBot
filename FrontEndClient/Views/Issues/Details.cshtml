@@ -6,11 +6,32 @@
 
 <p>@Model.Description</p>
 
+<form>
+  <label for="search">Filter Solutions By Search Term</label>
+  <input type="text" name="searchTerm" id="searchTerm">
+  <button type="submit" class="btn btn-secondary">Search</button>
+</form>
+
+@if (ViewBag.SearchTerm != null)
+{
+  @foreach(Solution solution in Model.Solutions)
+  { 
+    @if (solution.Name.Contains(ViewBag.SearchTerm) || solution.Description.Contains(ViewBag.SearchTerm))
+    {
+      <h4>@solution.Name</h4>
+      <p>@solution.Description</p>
+    }
+    
+  }
+}
+else
+{
   @foreach(Solution solution in Model.Solutions)
   {
     <h4>@solution.Name</h4>
     <p>@solution.Description</p>
   }
+}
 
 
 <p>@Html.ActionLink("Back to all Issues", "Index")</p>
