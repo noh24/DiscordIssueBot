@@ -32,7 +32,6 @@ namespace FrontEndClient.Models
 
       JArray jsonResponse = JsonConvert.DeserializeObject<JArray>(result);
       List<Issue> issueList = JsonConvert.DeserializeObject<List<Issue>>(jsonResponse.ToString());
-
       return issueList;      
     }
 

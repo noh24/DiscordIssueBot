@@ -23,7 +23,7 @@ namespace FrontEndClient.Models
     public static async Task<string> Search(string route, string search)
     {
       RestClient client = new RestClient("https://localhost:7210/");
-      RestRequest request = new RestRequest($"api/{route}?search={search}", Method.Get);
+      RestRequest request = new RestRequest($"api/{route}?searchTerm={search}", Method.Get);
       RestResponse response = await client.GetAsync(request);
       return response.Content;
     }
