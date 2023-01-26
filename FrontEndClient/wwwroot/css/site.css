@@ -21,19 +21,94 @@ html {
 body {
   margin-bottom: 60px;
   background-color: #011525;
+  color: aliceblue;
 }
 
-.section-1-bg
-{
+a,
+td,
+th {
+  color: aliceblue;
+}
+
+.section-1-bg {
   margin: 0;
   position: absolute;
   width: 100%;
   height: 600px;
   top: 0;
   z-index: -1;
-  background: rgb(0,21,36);
-  background: linear-gradient(0deg, rgba(0,21,36,1) 0%, rgba(121,9,85,1) 56%, rgba(210,47,47,1) 100%);
+  background: rgb(0, 21, 36);
+  background: linear-gradient(0deg, rgba(0, 21, 36, 1) 0%, rgba(121, 9, 85, 1) 56%, rgba(210, 47, 47, 1) 100%);
 }
+
+.section-1 {
+  min-height: 100vh;
+  min-width: 100vh;
+  position: relative;
+}
+
+.section-2 {
+  min-height: 50vh;
+  min-width: 100vh;
+}
+
+.walking {
+  animation-name: displaceContent;
+  animation-duration: 25s;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+}
+
+
+
+@keyframes displaceContent {
+
+  from {
+    transform: translateX(5em);
+  }
+
+  25% {
+    transform: translateX(30em);
+  }
+
+  50% {
+    transform: translateX(5em);
+  }
+
+  75% {
+    transform: translateX(30em);
+  }
+
+  100% {
+    transform: translateX(5em);
+  }
+}
+
+/* from {
+  transform: translateX(5em)
+}
+
+to {
+  transform: translateX(30em)
+} */
+
+/* slide down to make room for advertisements */
+
+
+@keyframes displaceContentR {
+  from {
+    transform: translateX(30em)
+  }
+
+  to {
+    transform: translateX(5em)
+  }
+
+  /* slide down to make room for advertisements */
+}
+
+
 
 #circuit {
   position: absolute;
@@ -64,7 +139,8 @@ body {
 #slash-btn:hover:before {
   content: "/slash commands"
 }
-#slash-btn:hover{
+
+#slash-btn:hover {
   font-weight: 800;
   background-color: #03213a;
   font-size: 20px;
@@ -79,11 +155,13 @@ body {
 a {
   color: #fff;
 }
+
 .scrollable-td {
   /* border: 1px solid black; */
   color: aliceblue;
   border: none;
-} 
+  vertical-align: middle;
+}
 
 .scrollable-th {
   /* border-left: 1px solid black; */
@@ -93,31 +171,69 @@ a {
 .scrollable-tbl {
   border-collapse: collapse;
   width: 100%;
+  padding: 0 10px;
 }
 
 .scrollable-tbl {
-    display: flex;
-    flex-flow: column;
-    width: 100%;
-    height: 200px;
-    
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: 200px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
 }
 
 .scrollable-thead {
-    padding-right: 13px;
-    flex: 0 0 auto;
+  padding-right: 13px;
+  flex: 0 0 auto;
 }
 
 .scrollable-tbody {
-    flex: 1 1 auto;
-    display: block;
-    overflow-y: auto;
-    overflow-x: hidden;
+  flex: 1 1 auto;
+  display: block;
 }
 
 .scrollable-tr {
-    width: 100%;
-    display: table;
-    table-layout: fixed;
-    border: none;
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+  border: none;
 }
+
+/* #allIssues {
+  height: 200px;
+  overflow-y: scroll;
+} */
+
+::-webkit-scrollbar {
+  width: 2px;
+  background: rgb(0, 21, 36);
+  background: linear-gradient(180deg, rgba(0, 21, 36, 1) 0%, rgba(121, 9, 85, 1) 56%, rgba(210, 47, 47, 1) 100%);
+}
+
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(0deg, rgba(0, 21, 36, 0.062) 0%, rgba(255, 49, 76, 0.842) 56%, rgba(210, 47, 47, 0.048) 100%);
+  border-radius: 10px;
+
+}
+
+
+img.token {}
+
+/* #parent{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#child{
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 17px;  Increase/decrease this value for cross-browser compatibility 
+  box-sizing: content-box;  So the width will be 100% + 17px 
+} */

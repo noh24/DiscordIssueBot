@@ -5,26 +5,70 @@
 
 $('#floatingSearch').keyup(function() {  
   var value = $(this).val().toLowerCase();    
-  $('ul li').filter(function() {
+  $('tr').filter(function() {
     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)});
     });
 
 
-const main = $('html');
+const main = $('.scrollable-tbody');
 
 // The scrollTop function
 // scrolls to the top
-function scrollTop() {
-    console.log('scrolling to top')
-    main.animate({scrollTop: 0},1000,"linear",scrollBottom /* this is a callback it means when we are done scrolling to the top, scroll to the bottom */)
+// function scrollBottom() {
+//     console.log('scrolling to top')
+//     main.animate({scrollTop: document.body.offsetHeight},3000,"linear",scrollTop)
+// }
+
+// function scrollTop() {
+//     console.log('scrolling to bottom')
+//     main.animate({scrollTop: 0},3000,"linear",scrollBottom)
+// }
+
+
+$(document).ready(function() {
+
+  if ($('.scrollable-tbody').height() > $('.scrollable-tbl').height()) {
+      setInterval(function () {
+          start();
+  }, 3000); 
+
+  }
+});
+
+function animateContent(direction) {  
+  var animationOffset = $('.scrollable-tbl').height() - $('.scrollable-tbody').height()-30;
+  if (direction == 'up') {
+      animationOffset = 0;
+  }
+
+  console.log("animationOffset:"+animationOffset);
+  $('.scrollable-tbody').animate({ "marginTop": (animationOffset)+ "px" }, 5000);
 }
 
-function scrollBottom() {
-    console.log('scrolling to bottom')
-    main.animate({scrollTop: document.body.offsetHeight},1000,"linear",scrollTop /* this is a callback it means when we are done scrolling to the bottom, scroll to the top */)
+function up(){
+  animateContent("up")
 }
+function down(){
+  animateContent("down")
+}
+
+function start(){
+setTimeout(function () {
+  down();
+}, 2000);
+  setTimeout(function () {
+  up();
+}, 2000);
+  setTimeout(function () {
+  console.log("wait...");
+}, 5000);
+}   
+
+  var number = 1 + Math.floor(Math.random() * 20);
+  $('.random').text(number);
+
 
 // this kicks it off
 // again only running $(document).ready once to increase performance.
 // Once scrollTop completes, it calls scrollBottom, which in turn calls scrollTop and so on
-$(document).ready(scrollTop);
+// $(document).ready(scrollTop);

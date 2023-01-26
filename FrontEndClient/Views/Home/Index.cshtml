@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Discord Issues Bot";
+  ViewData["Title"] = "Discord Issues Bot";
 }
 
 <div class="section-1-bg">
@@ -14,58 +14,181 @@
         <img id="circuit" src="~/img/circuit.png" alt="Discord Issues Bot Preview" />
       </div>
       <h1 class="display-4 font-weight-bold text-white">Discord Issues Bot System</h1>
-      <p class="lead font-weight-bold text-white-50">A simple system for posting issues and providing solutions on your Discord server.</p>
-      @* @Html.ActionLink("Issues", "Index", "issues")     *@
-      
-    <div class="row">
-      <div class="col">
-        <a href="#slash-commands" class="btn shadow text-white" id="slash-btn"><span>How to Use</span></a>
-        <a href="#get-started" class="btn bg-primary rounded-pill border text-white">Get Started</a>
+      <p class="lead font-weight-bold text-white-50">A simple system for posting issues and providing solutions on your
+        Discord server.</p>
+      @* @Html.ActionLink("Issues", "Index", "issues") *@
+
+      <div class="row">
+        <div class="col">
+          <a asp-controller="Home" asp-action="Index" asp-fragment="slash" class="btn shadow text-white"
+            id="slash-btn"><span>How to Use</span></a>
+          <a href="https://discord.com/api/oauth2/authorize?client_id=1067529813318963221&permissions=534723950656&scope=bot%20applications.commands"
+            class="btn bg-primary rounded-pill border text-white">Get Started</a>
+        </div>
       </div>
-    </div>
 
-    <div class="row py-5" id="search-box">
-      <div class="form-floating mb-3 ">
-        <input type="text" class="form-control bg-transparent rounded-pill text-white px-5" id="floatingSearch" placeholder="name@example.com">
-        <label for="floatingSearch" class="px-5 text-white">Search</label>
+      <div class="row py-5" id="search-box">
+        <div class="form-floating mb-3 ">
+          <input type="text" class="form-control bg-transparent rounded-pill text-white px-5" id="floatingSearch"
+            placeholder="name@example.com">
+          <label for="floatingSearch" class="px-5 text-white">Search Issue</label>
+        </div>
+        <div id="allIssues" class="row">
+          @* @foreach (Issue issue in Model)
+          {
 
-      
-        <table class="table scrollable-tbl">
-          <thead class="scrollable-thead">
-            <tr class="scrollable-tr">            
-              <th class="scrollable-th">
-                Issue
-              </th>
-              <th class="scrollable-th">
-                Description
-              </th>            
+          <div class="row">
+          <div class="col">
+          <a class="btn btn-primary">@issue.Token
+          <span class="badge bg-secondary"> 0 </span>
+          </a>
+          </div>
+          <div class="col">
+          <span>${"issue.Subject"}</span>
+          </div>
+
+          </div>
+          } *@
+
+
+          <table class="table scrollable-tbl">
+            @* <thead class="scrollable-thead">
+            <tr class="scrollable-tr">
+            <th class="scrollable-th">
+            Issue
+            </th>
+            <th class="scrollable-th">
+            Description
+            </th>
             </tr>
-          </thead>
-          <tbody class="scrollable-tbody">
-            @foreach (Issue issue in Model)
-            {
-              <tr class="scrollable-tr">
-                <td class="scrollable-td">
-                  @Html.ActionLink(issue.Name, "Details", "Issues", new {id = issue.IssueId})
-                </td>
-                <td class="scrollable-td">
-                  @issue.Subject
-                </td>               
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
+            </thead> *@
+            <tbody class="scrollable-tbody">
 
-    </div>
+              @foreach (Issue issue in Model)
+              {
+                <tr class="scrollable-tr">
+                  <td class="scrollable-td" width="200px">
+                    <a class="token position-relative" href="Issues\Details\@issue.IssueId">
+                      <img class="" src="~/img/robot2.png" width="80px">
+                      <span class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+                        @issue.Name </span>
+                    </a>
+                  </td>
+                  <td class="scrollable-td">
+                    <a>@issue.Subject <span class="random badge bg-secondary"> </span> </a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+      </div>
 
     </div>
   </div>
-  
-</div>
-<div class="section-2">
 
 </div>
-<div class="section-3">
+<div class="section-2 container">
 
+  <div class="row shadow">
+    <div class="col">
+      <h1 class="display-5 font-weight-bold text-white">How To Use the Bot</h1>
+      <p class="lead font-weight-bold text-white-50">After adding IssueBot to your server. You can start using <span
+          class="badge bg-secondary">/slash commands</span> to interact with the bot</p>
+      <div class="bg-white rounded-pill">
+        <img class="walking" src="https://media.giphy.com/media/20NLMBm0BkUOwNljwv/giphy.gif" width="250px" text-align="center"/>
+      </div>
+    </div>
+    <div class="col">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              Action
+            </th>
+            <th>
+              Command
+            </th>
+            <th>
+              Parameters
+            </th>
+            <th>
+              
+            </th>
+          </tr>
+        </thead>
+        <tbody class="">
+          <tr class="commands">
+            <td class="commands">
+              <span>Submitting a new Issue </span>
+            </td>
+            <td>
+              <span class="badge rounded-pill bg-secondary">/issue new</span>
+            </td>
+            <td class="commands">
+              <span class="badge bg-dark">subject</span>
+              <span>Enter a short description here</span>
+            </td>
+            <td class="commands">
+              <span class="badge bg-dark">description</span>
+              <span>Give all the details about the issue here</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="commands">
+              <span>Display all open issues </span>
+            </td>
+            <td>
+              <span class="badge rounded-pill bg-secondary">/issue show-all</span>
+            </td>
+            <td class="commands">
+              <span class="badge bg-dark">n/a</span>
+              <span>No required parameters</span>
+            </td>
+            <td class="commands">
+            </td>
+          </tr>
+          <tr class="commands">
+            <td class="commands">
+              <span>Submitting a Solution to an Issue </span>
+            </td>
+            <td>
+              <span class="badge rounded-pill bg-secondary">/solution new</span>
+            </td>
+            <td class="commands">
+              <span class="badge bg-dark">token</span>
+              <span>Enter the TokenId of the Issue you want to provide a solution.</span>
+            </td>
+            <td class="commands">
+              <span class="badge bg-dark">description</span>
+              <span>Give all the details about the solution here. Describe steps for solving the problem, provide helpful resources and etc.</span>
+            </td>
+          </tr>
+          <tr class="commands">
+            <td class="commands">
+              <span>Check for the bot's connectivity </span>
+            </td>
+            <td>
+              <span class="badge rounded-pill bg-secondary">/ping</span>
+            </td>
+            <td class="commands">
+              <span class="badge bg-dark">n/a</span>
+              <span>No required parameters</span>
+            </td>
+            <td class="commands">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="section-3 container my-5 shadow" id="slash">
+  <div class="row">
+    <h1 class="display-5 font-weight-bold text-white text-center">Meet The Team</h1>
+  </div>
+  <div class="row">
+    <h1 class="display-5 font-weight-bold text-white text-center">Meet The Team</h1>
+  </div>
 </div>
