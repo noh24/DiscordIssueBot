@@ -15,8 +15,10 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+            List<Issue> issues = Issue.GetIssues();
+            return View(issues);
     }
+
 
     public IActionResult Documentation()
     {

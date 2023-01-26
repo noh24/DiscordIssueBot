@@ -10,6 +10,8 @@ namespace FrontEndClient.Models
     public int IssueId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
+
+    public string Subject { get; set; }
     public List<Solution> Solutions {get; set; }
 
     public static List<Issue> GetIssues()

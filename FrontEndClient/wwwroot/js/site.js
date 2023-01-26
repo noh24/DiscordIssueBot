@@ -2,21 +2,29 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-window.addEventListener("mousemove", function (e) {
-  var to_append = document.getElementsByClassName('loader-container')[0];
-  var all = document.getElementsByClassName('loader-container');
 
-  var parent_div = document.createElement('div');
-  parent_div.className = "loader-container";
-  var inner_div = document.createElement('div');
-  inner_div.className = "loader";
-  parent_div.appendChild(inner_div)
-  var d = document.body.appendChild(parent_div);
+$('#floatingSearch').keyup(function() {  
+  var value = $(this).val().toLowerCase();    
+  $('ul li').filter(function() {
+    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)});
+    });
 
-  parent_div.style.left = (e.clientX - 50)+'px';
-  parent_div.style.top = (e.clientY - 50)+'px';
 
-  if(document.getElementsByClassName('loader-container').length > 50) {
-    document.body.removeChild(to_append)
-  }
-});
+const main = $('html');
+
+// The scrollTop function
+// scrolls to the top
+function scrollTop() {
+    console.log('scrolling to top')
+    main.animate({scrollTop: 0},1000,"linear",scrollBottom /* this is a callback it means when we are done scrolling to the top, scroll to the bottom */)
+}
+
+function scrollBottom() {
+    console.log('scrolling to bottom')
+    main.animate({scrollTop: document.body.offsetHeight},1000,"linear",scrollTop /* this is a callback it means when we are done scrolling to the bottom, scroll to the top */)
+}
+
+// this kicks it off
+// again only running $(document).ready once to increase performance.
+// Once scrollTop completes, it calls scrollBottom, which in turn calls scrollTop and so on
+$(document).ready(scrollTop);

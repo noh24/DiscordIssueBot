@@ -22,6 +22,40 @@
         <a href="#slash-commands" class="btn shadow text-white" id="slash-btn"><span>How to Use</span></a>
         <a href="#get-started" class="btn bg-primary rounded-pill border text-white">Get Started</a>
       </div>
+    </div>
+
+    <div class="row py-5" id="search-box">
+      <div class="form-floating mb-3 ">
+        <input type="text" class="form-control bg-transparent rounded-pill text-white px-5" id="floatingSearch" placeholder="name@example.com">
+        <label for="floatingSearch" class="px-5 text-white">Search</label>
+
+      
+        <table class="table scrollable-tbl">
+          <thead class="scrollable-thead">
+            <tr class="scrollable-tr">            
+              <th class="scrollable-th">
+                Issue
+              </th>
+              <th class="scrollable-th">
+                Description
+              </th>            
+            </tr>
+          </thead>
+          <tbody class="scrollable-tbody">
+            @foreach (Issue issue in Model)
+            {
+              <tr class="scrollable-tr">
+                <td class="scrollable-td">
+                  @Html.ActionLink(issue.Name, "Details", "Issues", new {id = issue.IssueId})
+                </td>
+                <td class="scrollable-td">
+                  @issue.Subject
+                </td>               
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
 
     </div>
 
