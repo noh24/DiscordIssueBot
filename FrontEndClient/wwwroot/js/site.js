@@ -64,8 +64,8 @@ setTimeout(function () {
 }, 5000);
 }   
 
-  var number = 1 + Math.floor(Math.random() * 20);
-  $('.random').text(number);
+var number = 1 + Math.floor(Math.random() * 20);
+('.random').text(number);
 
 
 // this kicks it off
