@@ -73,7 +73,7 @@ _This application consists of 3 separate components: the Discord Bot itself, the
 
 * _In the server, with Discord Issue Bot online , you can call the bot from any text channel or thread. To call the bot, type a slash "/" into the message line. A list of available commands will pop up, with the commands for your bot annotated with the bot's name:_
 
-![An example of using a slash command](http://placekitten.com/200/300 "Using a slash command")
+![Example of using slash commands](./images_for_README/Discord_IssueBot_Example.jpg)
 
 ---------------------------------------------------------------
 
