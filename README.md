@@ -38,9 +38,11 @@ _This application consists of 3 separate components: the Discord Bot itself, the
 * _Open the repository and navigate to the `BackendApi` directory. Create a new file called `appsettings.json` in the root of the `BackendApi` directory. Copy the following code into the file, with your own values for `uid` and `pwd`._
 
 ```
-  "ConnectionStrings": {
+  {
+    "ConnectionStrings": {
         "DefaultConnection": "Server=localhost;Port=3306;database=discord_issue_bot;uid=[YOUR UID HERE];pwd=[YOUR PASSWORD HERE];"
       }
+  }
 ```
 
 * _While you are still in the `BackendApi` directory, enter the command `$dotnet ef database update` and then `$ dotnet run`. This will first create a local sql database with the schema mapped by EF Core, then it will start the server for the database. Leave the server running in this terminal._
