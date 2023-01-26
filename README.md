@@ -44,17 +44,17 @@ _This application consists of 3 separate components: the Discord Bot itself, the
     }
 
   ```
-  
-* _First go to the Discord server where you intend to add your Bot. Click the dropdown tab in the top left that has your server name. Click `Server Settings` then select `Widget`. Copy the `Server ID` and paste it into `appsettings.json` where it says `[GUILD ID HERE]`.
+* _If you don't already have a Discord account, create one now `https://discord.com/`._
+
+* _Unless you already manage a Discord server, you will need to create a new Discord server (You have to have account manager privileges to add a bot to the server) `https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-`._
+
+* _Go to the Discord server where you intend to add your Bot. Click the dropdown tab in the top left that has your server name. Click `Server Settings` then select `Widget`. Copy the `Server ID` and paste it into `appsettings.json` where it says `[GUILD ID HERE]`._
  
-* _Now it is time to create your Discord Bot. Note: The next few steps of bot setup are described in more detail and with pictures at Discord.Net `https://discordnet.dev/guides/getting_started/first-bot.html`_
-  
-   * _If you don't already have a Discord account, create one now `https://discord.com/`. While you are at it, create a Discord server (You have to have account manager privileges to add a bot to the server) `https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-`._
-   * _Now go to the Discord Applications Portal `https://discord.com/developers/applications/` and click the `New Application` button. Give the application a name, then under `Settings` on the left click `Bot` and then `Add Bot`._
-   * _You will be given an authorization `token` for your bot. Copy this token, and paste it into `appsettings.json` file.
+* _Now it is time to create your Discord Bot. Note: The next few steps of bot setup are described in more detail and with pictures at Discord.Net `https://discordnet.dev/guides/getting_started/first-bot.html`_  
    
-   * _Now it is time to add the bot to your server. Click `Oath2` (under `Settings` on the left), tick `bot` under `scope`, choose the authorizations that you want to give the bot, and copy the authorization URL. Open this authorization URL in your browser, where you will be prompted to complete the setup and add it to a server._
-  
+   * _Go to the Discord Applications Portal `https://discord.com/developers/applications/` and click the `New Application` button. Give the application a name, then under `Settings` on the left click `Bot` and then `Add Bot`._
+   * _You will be given an authorization `token` for your bot. Copy this token, and paste it into `appsettings.json` file were it says `[YOUR TOKEN HERE]`_   
+   * _Now it is time to add the bot to your server. Click `Oath2` (under `Settings` on the left), tick `bot` under `scope`, choose the authorizations that you want to give the bot, and copy the authorization URL. Open this authorization URL in your browser, where you will be prompted to complete the setup and add it to a server._  
 * _Entity Framework Core has tools to automatically build the database schema utiliaing object mapping. To build the database, open a terminal, go to the `BackendApi` directory: `$ cd BackendApi` and enter the following command_
 
 ```
