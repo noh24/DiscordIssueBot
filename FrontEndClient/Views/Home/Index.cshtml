@@ -9,14 +9,17 @@
     <div class="col">
       <img src="~/img/preview.png" alt="Discord Issues Bot Preview" />
     </div>
-    <div class="banner col ">    
+    <div class="banner col ">
+      <div id="circuit-container">
+        <img id="circuit" src="~/img/circuit.png" alt="Discord Issues Bot Preview" />
+      </div>
       <h1 class="display-4 font-weight-bold text-white">Discord Issues Bot System</h1>
-      <p class="lead">A simple system for posting issues and providing solutions on your Discord server.</p>
+      <p class="lead font-weight-bold text-white-50">A simple system for posting issues and providing solutions on your Discord server.</p>
       @* @Html.ActionLink("Issues", "Index", "issues")     *@
       
     <div class="row">
       <div class="col">
-        <a href="#slash-commands" class="btn">Slash Commands</a>
+        <a href="#slash-commands" class="btn shadow text-white" id="slash-btn"><span>How to Use</span></a>
         <a href="#get-started" class="btn bg-primary rounded-pill border text-white">Get Started</a>
       </div>
 

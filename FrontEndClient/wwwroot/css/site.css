@@ -34,3 +34,40 @@ body {
   background: rgb(0,21,36);
   background: linear-gradient(0deg, rgba(0,21,36,1) 0%, rgba(121,9,85,1) 56%, rgba(210,47,47,1) 100%);
 }
+
+#circuit {
+  position: absolute;
+  top: -50px;
+  z-index: -1;
+  width: 100%;
+  height: 200px;
+  opacity: 0.4;
+  left: 0;
+  animation: robot1 10s linear infinite;
+}
+
+#circuit-container {
+  position: relative;
+  background-size: cover;
+  animation: robot1 10s linear infinite;
+}
+
+#slash-btn {
+  font-size: 20px;
+  color: black;
+}
+
+#slash-btn:hover span {
+  display: none
+}
+
+#slash-btn:hover:before {
+  content: "/slash commands"
+}
+#slash-btn:hover{
+  font-weight: 800;
+  background-color: #03213a;
+  font-size: 20px;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
