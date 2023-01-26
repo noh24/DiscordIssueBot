@@ -22,7 +22,7 @@ namespace BackEndApi.Controllers
       IQueryable<Issue> query = _db.Issues.AsQueryable().Include(e => e.Solutions);
       if (searchTerm != null)
       {
-        query = query.Where(entry => (entry.Name.Contains(searchTerm) || entry.Description.Contains(searchTerm)));
+        query = query.Where(entry => (entry.Subject.Contains(searchTerm) || entry.Description.Contains(searchTerm)));
       }
       return await query.ToListAsync();
     }
