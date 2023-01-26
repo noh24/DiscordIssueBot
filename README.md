@@ -28,7 +28,7 @@ _This application consists of 3 separate components: the Discord Bot itself, the
   
 * _Download MySQL Community Server and MySQL Workbench if you don't already have them (both from this link). Make note of both the `User ID (UID)` and the `Password (PWD)` that you define in your setup configurations for MySQL. These values will go into your `appsettings.json` file in a few steps_
   
-    _https://dev.mysql.com/downloads/
+    _https://dev.mysql.com/downloads/_
   
 * _Clone this repository to your machine_
 
@@ -67,7 +67,13 @@ _This application consists of 3 separate components: the Discord Bot itself, the
 
 * _Finally, open a third terminal. Navigate to the `FrontEndClient` directory and enter the command `$ dotnet run`. Copy the URL `https://localhost:7016` and paste it into your browser. This will bring you to the external client-side web page for browsing all Issues and Solutions that have been posted via Discord Bot from your Discord Server_
 
-## Using The Discord Bot
+## Using The Discord Issue Bot
+
+* _To use the Discord Issue Bot, log into Discord and join the server where bot has been added. You should see that your bot is `ONLINE` (the bot will have whatever name you gave it). If the bot is not online, make sure that you have a terminal open and running the code in `DiscordBotv2`. If the bot is still not online, check the `appsettings.json` file and make sure that `token` and `guid` are properly entered. You may need to reset your token at the Discord Applications Folder `https://discord.com/developers/applications/`_
+
+* _In the server, with Discord Issue Bot online , you can call the bot from any text channel or thread. To call the bot, type a slash "/" into the message line. A list of available commands will pop up, with the commands for your bot annotated with the bot's name:_
+
+![An example of using a slash command](http://placekitten.com/200/300 "Using a slash command")
 
 ---------------------------------------------------------------
 
