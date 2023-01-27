@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Interactions;
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +43,15 @@ namespace InteractionFramework
                                         )
                                     )
                 .BuildServiceProvider();
+
+                //Add command context
+
+
+                // _services.AddSingleton(new CommandService());
+
+                // var provider = _services.BuildServiceProvider();
+                // provider.GetRequiredService<CommandService>();
+                // _client.AddSingleton(provider);
         }
 
         static void Main(string[] args)
@@ -58,7 +68,7 @@ namespace InteractionFramework
             // Here we can initialize the service that will register and execute our commands
             await _services.GetRequiredService<InteractionHandler>()
                 .InitializeAsync();
-
+            //stuff
             // Bot token can be provided from the Configuration object we set up earlier
             await client.LoginAsync(TokenType.Bot, _configuration["token"]);
             await client.StartAsync();

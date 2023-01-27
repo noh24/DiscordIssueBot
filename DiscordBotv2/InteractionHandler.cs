@@ -55,7 +55,7 @@ namespace InteractionFramework
             {
                 // Create an execution context that matches the generic type parameter of your InteractionModuleBase<T> modules.
                 var context = new SocketInteractionContext(_client, interaction);
-
+                
                 // Execute the incoming command.
                 var result = await _handler.ExecuteCommandAsync(context, _services);
 

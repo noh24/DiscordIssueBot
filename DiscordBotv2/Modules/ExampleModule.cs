@@ -1,4 +1,5 @@
 using Discord;
+using Discord.Interactivity;
 using Discord.Interactions;
 using DiscordBot.Models;
 using InteractionFramework.Attributes;
@@ -7,6 +8,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using Discord.WebSocket;
+using System.Reflection.Emit;
 
 namespace InteractionFramework.Modules
 {
@@ -16,14 +19,16 @@ namespace InteractionFramework.Modules
         // Dependencies can be accessed through Property injection, public properties with public setters will be set by the service provider
         public InteractionService Commands { get; set; }
         private readonly ApplicationContext _db;
-
         private InteractionHandler _handler;
 
+        private readonly DiscordSocketClient _client;
+
         // Constructor injection is also a valid way to access the dependencies
-        public ExampleModule(InteractionHandler handler, ApplicationContext db)
+        public ExampleModule(InteractionHandler handler, ApplicationContext db, DiscordSocketClient client)
         {
             _handler = handler;
             _db = db;
+            _client = client;
         }
 
         // You can use a number of parameter types in you Slash Command handlers (string, int, double, bool, IUser, IChannel, IMentionable, IRole, Enums) by default. Optionally,
@@ -44,6 +49,8 @@ namespace InteractionFramework.Modules
         [SlashCommand("solution", "Create a Solution")]
         public async Task AddSolution(string token, string description)
         {   
+
+            // var message = Context.Message
             var sb = new StringBuilder();
             var embed = new EmbedBuilder();
             token = token.Trim();
@@ -83,6 +90,54 @@ namespace InteractionFramework.Modules
             await RespondAsync(embed: embed.Build());
         }
         
+
+        [MessageCommand("New Solution")]
+        public async Task ReplyAsync(IMessage message)       
+        {
+            IReadOnlyCollection<IEmbed> embeds = message.Embeds;
+            await RespondAsync($"WIP:Create a solution via Right click for {message.Author.Username}");
+        }
+
+        public async Task<EmbedBuilder> AddSolutionMain(string token, string description)
+        {   
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+            token = token.Trim();
+            Issue currentIssue = _db.Issues.FirstOrDefault(issue => issue.Token == token);
+            if (token != null && token.Length == 10 && currentIssue != null)
+            {
+                await _db.Solutions.AddAsync( new Solution 
+                {
+                    Name = Context.User.Username,
+                    Description = description,
+                    IssueId = currentIssue.IssueId
+                    
+                });
+                await _db.SaveChangesAsync();  
+                sb.AppendLine();
+                sb.AppendLine("**Solution Description**");
+                sb.AppendLine(description);
+                sb.AppendLine("**Solution Posted By**");
+                sb.AppendLine(Context.User.Username);
+                embed.Title = $"Solution to Issue: {currentIssue.Description}";
+                embed.Description = sb.ToString();
+                //await RespondAsync(text: "Solution created");
+
+            }
+            else
+            {
+                sb.AppendLine();
+                sb.AppendLine("**Token:**");
+                sb.AppendLine(token);
+                sb.Append("** Not Found**");
+                embed.Title = $"ERROR";
+                embed.Description = sb.ToString();
+                //await RespondAsync(text: "Solution not created");
+
+            }
+
+        return embed;
+        }
         
         [Group("issue", "This is a command group")]
         public class IssueCommands : InteractionModuleBase<SocketInteractionContext>
@@ -102,6 +157,7 @@ namespace InteractionFramework.Modules
 
                 // get user info from the Context
                 var user = Context.User;
+                
                 
                 var issues = await _db.Issues.ToListAsync();
                 if (issues.Count > 0)
@@ -181,6 +237,81 @@ namespace InteractionFramework.Modules
                 // send embed reply
                 await RespondAsync(embed: embed.Build());
                 //await ReplyAsync(null, false, embed.Build());
+            }
+
+            [SlashCommand("show-by-description", "Search for issues by description")]
+            public async Task ShowIssue(string description)
+            {
+                string[] descriptionArray = description.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                //show all issues
+                // List<Issue> allIssues = _db.Issues.ToList();
+                // List<Issue> issues = new List<Issue>();
+                // int counter = 0 ;
+                // foreach (Issue entry in allIssues)
+                // {
+                //     foreach (String descriptionEntry in descriptionArray)
+                //     {
+                //         if (entry.Description.Contains(descriptionEntry))
+                //         {
+                //             counter++;
+                //         }
+                //     }
+                //     counters.Add(counter);
+                //     counter = 0;
+                // }
+                
+                
+
+                Issue issue = new Issue();
+                if (descriptionArray.Length == 1)
+                {
+                    issue = _db.Issues.FirstOrDefault(x => x.Description.Contains(descriptionArray[0]));
+
+                }
+                if (descriptionArray.Length > 1)
+                {
+                    List<Issue> issues = _db.Issues.ToList();
+                    int counter = 0;
+                    List<int> counters = new List<int>();
+                foreach (Issue entry in issues)
+                {
+                    foreach (String descriptionEntry in descriptionArray)
+                    {
+                        if (entry.Description.Contains(descriptionEntry))
+                        {
+                            counter++;
+                        }
+                    }
+                    counters.Add(counter);
+                    counter = 0;
+                }
+                    int index = 0;
+                    for (int i = 0; i < counters.Count; i++)
+                    {
+                        if (counter < counters[i])
+                        {
+                            counter = counters[i];
+                            index = i;
+                        }
+                    }
+                    issue = issues[index];
+                }
+                var sb = new StringBuilder();
+                var embed = new EmbedBuilder();
+                sb.AppendLine();
+                sb.AppendLine("**Subject:**");
+                sb.AppendLine(issue.Subject);
+                sb.AppendLine("**Issue Description:**");
+                sb.AppendLine(issue.Description);
+                sb.AppendLine();
+                sb.AppendLine("**Asked By:**");
+                sb.AppendLine(issue.Name);
+                sb.AppendLine("**Issue Token:**");
+                sb.AppendLine(issue.Token);      
+
+                embed.Title = $"This is the most relatable issue based on your description {description} entered";
+                embed.Description = sb.ToString();
+                await RespondAsync(embed: embed.Build());
             }
         }
 

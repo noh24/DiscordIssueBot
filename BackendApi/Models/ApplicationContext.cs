@@ -14,9 +14,9 @@ namespace BackEndApi.Models
     {
       builder.Entity<Issue>()
         .HasData(
-          new Issue { IssueId = 1, Subject = "Discord.net cannot initiate RequestOptions", Description = "Hello i've been trying to dev a bot in Discord.net and it's been doing good so far. Though issue that i had is that i'm trying to use the GetMessagesAsync from ITextChannel using an option. Unfortunately i have no idea how to initiate RequestOptions and i try to search the documentation and found nothing." },
-          new Issue { IssueId = 2, Subject = "Discord.net how to mention roles", Description = "How can I mention guild roles in C# with the Discord.net library?"},
-          new Issue { IssueId = 3, Subject = "Discord.net not working on linux", Description = "I'm trying to get a discord bot coded in discord.net running on a linux VPS, I'm running via mono but I keep getting this error"}
+          new Issue { Name = "Brian", IssueId = 1, Subject = "Discord.net cannot initiate RequestOptions", Description = "Hello i've been trying to dev a bot in Discord.net and it's been doing good so far. Though issue that i had is that i'm trying to use the GetMessagesAsync from ITextChannel using an option. Unfortunately i have no idea how to initiate RequestOptions and i try to search the documentation and found nothing." },
+          new Issue { Name = "Yodel", IssueId = 2, Subject = "Discord.net how to mention roles", Description = "How can I mention guild roles in C# with the Discord.net library?"},
+          new Issue { Name = "Robert", IssueId = 3, Subject = "Discord.net not working on linux", Description = "I'm trying to get a discord bot coded in discord.net running on a linux VPS, I'm running via mono but I keep getting this error"}
         );
       builder.Entity<Solution>()
         .HasData(
